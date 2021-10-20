@@ -11,6 +11,13 @@ namespace convesor.ws
     {
         public static void Main(string[] args)
         {
+            Conversor conversor = new Conversor();
+
+            conversor.ConverterTxtEmPdf();
+            
+
+
+
             CreateHostBuilder(args).Build().Run();
         }
 
