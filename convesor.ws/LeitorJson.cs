@@ -21,16 +21,20 @@ namespace convesor.ws
         {
             return config.GetSection("Diretorios").GetSection("RepositorioEntrada").Value;
         }
-
-        public string PegarCaminhoDeSaida()
+        public string PegarCaminhoDeSaidaPDF()
         {
 
-            return config.GetSection("Diretorios").GetSection("RepositorioSaida").Value; 
+            return config.GetSection("Diretorios").GetSection("RepositorioSaidaPDF").Value; 
         }
-        public string PegarCaminhoDeSaidaParaErro()
+        public string PegarCaminhoDeSaidaTxtComFalha()
         {
 
-            return config.GetSection("Diretorios").GetSection("RepositorioErro").Value;
+            return config.GetSection("Diretorios").GetSection("RepositorioSaidaTxtComFalha").Value;
+        }
+        public string PegarCaminhoDeSaidaTxtProcessado()
+        {
+
+            return config.GetSection("Diretorios").GetSection("RepositorioSaidaTxtProcessado").Value;
         }
     }
 }
