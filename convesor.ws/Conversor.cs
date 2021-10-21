@@ -7,14 +7,15 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+using System.Threading;
 using Document = iTextSharp.text.Document;
 
 namespace convesor.ws
 {
     public class Conversor
     {
-        private string caminhoEntrada;
-        string[] linhasDoTxt = null;     
+        string[] linhasDoTxt = null;
         LeitorDeTxt leitorDeTxt;
         string caminhoSaidaPdf = null;
         string caminhoCompletoDoArquivoTxt = null;
@@ -23,31 +24,34 @@ namespace convesor.ws
         public Conversor()
         {
             leitorJson = new LeitorJson();
-            leitorDeTxt = new LeitorDeTxt() ;
+            leitorDeTxt = new LeitorDeTxt();
             caminhoSaidaPdf = leitorJson.PegarCaminhoDeSaidaPDF();
-            caminhoEntrada = leitorJson.PegarCaminhoDeEntrada();
 
         }
         public void ConverterTxtEmPdf(string file)
         {
             try
-            {            
-                caminhoCompletoDoArquivoTxt = leitorJson.PegarCaminhoDeEntrada() + tituloDoArquivo;
+            {
+                Console.WriteLine("Convertendo arquivo: " + file);
 
                 tituloDoArquivo = leitorDeTxt.LerNomeDoArquivo(file);
+
+                caminhoCompletoDoArquivoTxt = leitorJson.PegarCaminhoDeEntrada() + tituloDoArquivo;
 
                 linhasDoTxt = leitorDeTxt.LerLinhasDoTxt(file);
 
                 string caminhoDoArquivoPDF = $@"{caminhoSaidaPdf}" + $"{tituloDoArquivo.Replace(".txt", "")}.pdf";
                 FileStream arquivoPDF = new FileStream(caminhoDoArquivoPDF, FileMode.Create);
                 Document doc = new Document(PageSize.A4);
+
+
                 PdfWriter escritoPDF = PdfWriter.GetInstance(doc, arquivoPDF);
 
                 Paragraph paragrafo = new Paragraph();
 
                 foreach (var linha in linhasDoTxt)
                 {
-                    paragrafo.Add(linha+ "\n");
+                    paragrafo.Add(linha + "\n");
                 }
 
                 doc.Open();
@@ -57,6 +61,7 @@ namespace convesor.ws
                 File.Copy(caminhoCompletoDoArquivoTxt, leitorJson.PegarCaminhoDeSaidaTxtProcessado() + $@"{tituloDoArquivo}");
                 File.Delete(caminhoCompletoDoArquivoTxt);
 
+                Console.WriteLine("Finalizando arquivo: " + file);
             }
             catch (Exception ex)
             {
