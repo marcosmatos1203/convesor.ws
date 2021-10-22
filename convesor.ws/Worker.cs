@@ -44,10 +44,10 @@ namespace convesor.ws
                 stopwatch.Stop();
 
                 Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
-                 stopwatch.ElapsedMilliseconds);
+                 stopwatch.ElapsedMilliseconds / 1000);               
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(2000, stoppingToken);
             }
         }
     }
