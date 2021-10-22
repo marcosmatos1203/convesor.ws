@@ -33,29 +33,28 @@ namespace convesor.ws
             try
             {
                 Console.WriteLine("Convertendo arquivo: " + file);
-
+                
                 tituloDoArquivo = leitorDeTxt.LerNomeDoArquivo(file);
-
+                
                 caminhoCompletoDoArquivoTxt = leitorJson.PegarCaminhoDeEntrada() + tituloDoArquivo;
-
+                
                 linhasDoTxt = leitorDeTxt.LerLinhasDoTxt(file);
 
                 string caminhoDoArquivoPDF = $@"{caminhoSaidaPdf}" + $"{tituloDoArquivo.Replace(".txt", "")}.pdf";
+               
                 FileStream arquivoPDF = new FileStream(caminhoDoArquivoPDF, FileMode.Create);
+               
                 Document doc = new Document(PageSize.A4);
 
+                PdfWriter.GetInstance(doc, arquivoPDF);
 
-                PdfWriter escritoPDF = PdfWriter.GetInstance(doc, arquivoPDF);
-
-                Paragraph paragrafo = new Paragraph();
+                doc.Open();
 
                 foreach (var linha in linhasDoTxt)
                 {
-                    paragrafo.Add(linha + "\n");
-                }
-
-                doc.Open();
-                doc.Add(paragrafo);
+                    doc.Add(new Paragraph(linha + "\n"));                  
+                }           
+                
                 doc.Close();
 
                 File.Copy(caminhoCompletoDoArquivoTxt, leitorJson.PegarCaminhoDeSaidaTxtProcessado() + $@"{tituloDoArquivo}");

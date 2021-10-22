@@ -15,11 +15,12 @@ namespace convesor.ws
         private readonly ILogger<Worker> _logger;
         private string caminhoEntrada;
         LeitorJson leitorJson;
-
+        LeitorDeTxt leitorDeTxt;
 
         public Worker(ILogger<Worker> logger)
         {
-           leitorJson = new LeitorJson();
+            leitorJson = new LeitorJson();
+            leitorDeTxt = new LeitorDeTxt();
             caminhoEntrada = leitorJson.PegarCaminhoDeEntrada();
             _logger = logger;
         }
@@ -27,15 +28,18 @@ namespace convesor.ws
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
-            {         
-             
-                Conversor conversor = new Conversor();            
+            {                
 
                 Stopwatch stopwatch = new Stopwatch();
 
-                stopwatch.Start();                       
+                stopwatch.Start();
 
-                Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (a) => conversor.ConverterTxtEmPdf(a));
+                Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
+                {
+                    Conversor conversor = new Conversor();
+
+                    conversor.ConverterTxtEmPdf(arquivo);
+                });
 
                 stopwatch.Stop();
 
