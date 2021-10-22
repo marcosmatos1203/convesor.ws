@@ -28,6 +28,7 @@ namespace convesor.ws
             caminhoSaidaPdf = leitorJson.PegarCaminhoDeSaidaPDF();
 
         }
+
         public void ConverterTxtEmPdf(string file)
         {
             try

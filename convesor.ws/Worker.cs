@@ -16,6 +16,7 @@ namespace convesor.ws
         private string caminhoEntrada;
         LeitorJson leitorJson;
         LeitorDeTxt leitorDeTxt;
+        WatcherFolder watcher;
 
         public Worker(ILogger<Worker> logger)
         {
@@ -23,32 +24,35 @@ namespace convesor.ws
             leitorDeTxt = new LeitorDeTxt();
             caminhoEntrada = leitorJson.PegarCaminhoDeEntrada();
             _logger = logger;
+            watcher = new WatcherFolder();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {                
+            Stopwatch stopwatch = new Stopwatch();
 
-                Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-                stopwatch.Start();
+            Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
+            {
+                Conversor conversor = new Conversor();
 
-                Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
-                {
-                    Conversor conversor = new Conversor();
+                conversor.ConverterTxtEmPdf(arquivo);
+            });
 
-                    conversor.ConverterTxtEmPdf(arquivo);
-                });
+            stopwatch.Stop();
 
-                stopwatch.Stop();
+            Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
+             stopwatch.ElapsedMilliseconds);
 
-                Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
-                 stopwatch.ElapsedMilliseconds);
+            watcher.Observar();
+        }
 
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
-            }
+        private void OnActionOccurOnFolderPath(object sender, FileSystemEventArgs e)
+        {
+            Console.WriteLine("=== Algumas mudanças aconteceram ===");
+            Console.WriteLine(e.ChangeType);
+            Console.WriteLine(e.Name);
         }
     }
 }
