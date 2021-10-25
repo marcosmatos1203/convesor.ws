@@ -29,9 +29,9 @@ namespace convesor.ws
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Stopwatch stopwatch = new Stopwatch();
+            //Stopwatch stopwatch = new Stopwatch();
 
-            stopwatch.Start();
+            //stopwatch.Start();
 
             //Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
             //{
@@ -40,12 +40,14 @@ namespace convesor.ws
             //    conversor.ConverterTxtEmPdf(arquivo);
             //});
 
-            stopwatch.Stop();
-
-            Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
-             stopwatch.ElapsedMilliseconds);
-       
             watcher.Observar();
+
+            //stopwatch.Stop();
+
+            //Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
+            // stopwatch.ElapsedMilliseconds);
+       
+         
         }
 
         private void OnActionOccurOnFolderPath(object sender, FileSystemEventArgs e)
