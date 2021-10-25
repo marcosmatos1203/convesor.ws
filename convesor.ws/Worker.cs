@@ -33,18 +33,18 @@ namespace convesor.ws
 
             stopwatch.Start();
 
-            Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
-            {
-                Conversor conversor = new Conversor();
+            //Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
+            //{
+            //    Conversor conversor = new Conversor();
 
-                conversor.ConverterTxtEmPdf(arquivo);
-            });
+            //    conversor.ConverterTxtEmPdf(arquivo);
+            //});
 
             stopwatch.Stop();
 
             Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
              stopwatch.ElapsedMilliseconds);
-
+       
             watcher.Observar();
         }
 
