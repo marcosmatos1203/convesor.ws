@@ -15,7 +15,8 @@ namespace convesor.ws
 {
     public class Conversor
     {
-        string[] linhasDoTxt = null;
+        StringBuilder msg = new StringBuilder();
+        //string[] linhasDoTxt = null;
         LeitorDeTxt leitorDeTxt;
         string caminhoSaidaPdf = null;
         string caminhoCompletoDoArquivoTxt = null;
@@ -37,8 +38,9 @@ namespace convesor.ws
                 tituloDoArquivo = leitorDeTxt.LerNomeDoArquivo(file);
                 
                 caminhoCompletoDoArquivoTxt = leitorJson.PegarCaminhoDeEntrada() + tituloDoArquivo;
-                
-                linhasDoTxt = leitorDeTxt.LerLinhasDoTxt(file);
+
+                msg.Append(leitorDeTxt.LerLinhasDoTxt(file));
+                //linhasDoTxt = leitorDeTxt.LerLinhasDoTxt(file);
 
                 string caminhoDoArquivoPDF = $@"{caminhoSaidaPdf}" + $"{tituloDoArquivo.Replace(".txt", "")}.pdf";
                
@@ -50,11 +52,13 @@ namespace convesor.ws
 
                 doc.Open();
 
-                foreach (var linha in linhasDoTxt)
-                {
-                    doc.Add(new Paragraph(linha + "\n"));                  
-                }           
-                
+                doc.Add(new Paragraph(msg.ToString()));
+
+                //foreach (var linha in linhasDoTxt)
+                //{
+                //    doc.Add(new Paragraph(linha + "\n"));
+                //}
+
                 doc.Close();
 
                 File.Copy(caminhoCompletoDoArquivoTxt, leitorJson.PegarCaminhoDeSaidaTxtProcessado() + $@"{tituloDoArquivo}");
