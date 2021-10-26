@@ -29,32 +29,25 @@ namespace convesor.ws
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //Stopwatch stopwatch = new Stopwatch();
+            Stopwatch stopwatch = new Stopwatch();
 
-            //stopwatch.Start();
+            stopwatch.Start();
 
-            //Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
-            //{
-            //    Conversor conversor = new Conversor();
+            Parallel.ForEach(Directory.GetFiles(caminhoEntrada, "*.txt"), (arquivo) =>
+            {
+                Conversor conversor = new Conversor();
 
-            //    conversor.ConverterTxtEmPdf(arquivo);
-            //});
+                conversor.ConverterTxtEmPdf(arquivo);
+            });
 
             watcher.Observar();
 
-            //stopwatch.Stop();
+            stopwatch.Stop();
 
-            //Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
-            // stopwatch.ElapsedMilliseconds);
-       
-         
-        }
+            Console.WriteLine("Tempo decorrido EM PARALELO {0} segundos",
+                stopwatch.ElapsedMilliseconds);
 
-        private void OnActionOccurOnFolderPath(object sender, FileSystemEventArgs e)
-        {
-            Console.WriteLine("=== Algumas mudanças aconteceram ===");
-            Console.WriteLine(e.ChangeType);
-            Console.WriteLine(e.Name);
+
         }
     }
 }
